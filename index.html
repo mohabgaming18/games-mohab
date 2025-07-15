@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدونة روابط الألعاب</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #f7d794, #2b6cb0);
+            margin: 0;
+            padding: 40px;
+            color: #fff;
+            text-align: center;
+            min-height: 100vh;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+        }
+        .search-bar input {
+            padding: 10px;
+            width: 300px;
+            max-width: 90%;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            outline: none;
+        }
+        .filter-buttons {
+            margin-bottom: 20px;
+        }
+        .filter-buttons button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        .filter-buttons button:hover {
+            background-color: #0056b3;
+        }
+        .filter-buttons button.active {
+            background-color: #28a745;
+        }
+        .game-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .game-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+        .game-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-bottom: 2px solid #007BFF;
+        }
+        .game-card h3 {
+            color: #333;
+            margin: 15px 0;
+            font-size: 1.4em;
+        }
+        .game-card p {
+            color: #666;
+            font-size: 0.9em;
+            margin: 0 15px 10px;
+        }
+        .game-details {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .game-details img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .game-details h2 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .game-details p {
+            color: #666;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+        .game-details a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 25px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .game-details a:hover {
+            background-color: #0056b3;
+        }
+        .back-button {
+            padding: 10px 20px;
+            margin: 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .back-button:hover {
+            background-color: #218838;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="mainPage">
+        <h1>Mohab Gaming</h1>
+        <p>استمتع بتحميل ألعابك المفضلة بضغطة واحدة!</p>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="ابحث عن لعبة...">
+        </div>
+        <div class="filter-buttons" id="filterButtons">
+            <button data-category="all" class="active">الكل</button>
+            <button data-category="كمبيوتر">كمبيوتر</button>
+            <button data-category="موبايل">موبايل</button>
+            <button data-category="برامج">برامج</button>
+        </div>
+        <div id="gameList" class="game-list"></div>
+    </div>
+    <div id="gameDetails" class="game-details hidden"></div>
+
+    <script>
+        // قائمة الألعاب مع الصور والتصنيفات وروابط متعددة
+        const games = [
+            {
+                name: "Schedule I",
+                image: "https://via.placeholder.com/250x150?text=FIFA+2023",
+                category: "كمبيوتر",
+                links: [
+                    { platform: "ملف اللعبة", url: "https://gofile.io/d/cnkruO" },
+                    { platform: "ملف الاونلاين", url: "https://gofile.io/d/Ta1lFW" },
+                    { platform: "رابط بديل", url: "https://example.com/fifa2023-xbox" }
+                ]
+            },
+            {
+                name: "REPO",
+                image: "https://via.placeholder.com/250x150?text=Call+of+Duty",
+                category: "كمبيوتر",
+                links: [
+                    { platform: "ملف اللعبة", url: "https://gofile.io/d/ep69cn" },
+                    { platform: "ملف الاونلاين", url: "https://gofile.io/d/Dvhrcx" }
+                ]
+            },
+            {
+                name: "Minecraft",
+                image: "https://via.placeholder.com/250x150?text=Minecraft",
+                category: "كمبيوتر",
+                links: [
+                    { platform: "PC", url: "https://tlauncher.org/" },
+                    { platform: "Mobile", url: "https://www.mediafire.com/file/pfiuxhd11t2g5c2/minecraft-1-21-93-arm64-v8a.apk/file" }
+                ]
+            },
+            {
+                name: "Spotify Premium",
+                image: "https://www.mediafire.com/file/g5re8d73lvzumyi/SpotX-main.zip/file",
+                category: "برامج",
+                links: [
+                    { platform: "pc", url: "https://www.mediafire.com/file/g5re8d73lvzumyi/SpotX-main.zip/file" },
+                    { platform: "Mobile", url: "https://gofile.io/d/WVTzTu" },
+                    { platform: "iphone", url: "soon" }
+             
+                           ]
+            },
+            {
+                name: "ريماتش2025",
+                image: "https://via.placeholder.com/250x150?text=FIFA+2023",
+                category: "كمبيوتر",
+                links: [
+                    { platform: "PC", url: "https://example.com/fifa2023-pc" },
+                    { platform: "PlayStation", url: "https://example.com/fifa2023-ps" },
+                    { platform: "Xbox", url: "https://example.com/fifa2023-xbox" }
+                ]
+            },
+                        ];
+
+        const mainPage = document.getElementById("mainPage");
+        const gameDetails = document.getElementById("gameDetails");
+        const gameList = document.getElementById("gameList");
+        const searchInput = document.getElementById("searchInput");
+        const filterButtons = document.querySelectorAll("#filterButtons button");
+
+        function displayGames(filteredGames) {
+            gameList.innerHTML = "";
+            filteredGames.forEach(game => {
+                const gameCard = document.createElement("div");
+                gameCard.className = "game-card";
+                gameCard.innerHTML = `
+                    <img src="${game.image}" alt="${game.name}">
+                    <h3>${game.name}</h3>
+                    <p>${game.category}</p>
+                `;
+                gameCard.addEventListener("click", () => showGameDetails(game));
+                gameList.appendChild(gameCard);
+            });
+        }
+
+        function showGameDetails(game) {
+            mainPage.classList.add("hidden");
+            gameDetails.classList.remove("hidden");
+            gameDetails.innerHTML = `
+                <img src="${game.image}" alt="${game.name}">
+                <h2>${game.name}</h2>
+                <p>التصنيف: ${game.category}</p>
+                <h3>روابط التحميل:</h3>
+                ${game.links.map(link => `<a href="${link.url}" target="_blank">${link.platform}</a>`).join("")}
+                <br>
+                <button class="back-button">رجوع</button>
+            `;
+            gameDetails.querySelector(".back-button").addEventListener("click", () => {
+                gameDetails.classList.add("hidden");
+                mainPage.classList.remove("hidden");
+            });
+        }
+
+        // البحث في الألعاب
+        searchInput.addEventListener("input", () => {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const activeCategory = document.querySelector(".filter-buttons button.active").dataset.category;
+            const filteredGames = games.filter(game =>
+                (activeCategory === "all" || game.category === activeCategory) &&
+                game.name.toLowerCase().includes(searchTerm)
+            );
+            displayGames(filteredGames);
+        });
+
+        // فلترة الألعاب حسب التصنيف
+        filterButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                filterButtons.forEach(btn => btn.classList.remove("active"));
+                button.classList.add("active");
+                const category = button.dataset.category;
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                const filteredGames = games.filter(game =>
+                    (category === "all" || game.category === category) &&
+                    game.name.toLowerCase().includes(searchTerm)
+                );
+                displayGames(filteredGames);
+            });
+        });
+
+        // عرض كل الألعاب في البداية
+        displayGames(games);
+    </script>
+</body>
+</html>
